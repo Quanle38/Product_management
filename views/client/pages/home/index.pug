@@ -1,6 +1,4 @@
-html
-    head 
-        title Trang Chu
-    body 
-        h1 Welcome to the Home Page
-        p This is the main content of the home page.
+extend ../../layouts/default.pug
+include ../../mixins/box-head.pug
+block main 
+    +box-head('Trang Chu')
