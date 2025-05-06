@@ -7,6 +7,6 @@ module.exports = (app) =>{
     app.use(`${PATH_ADMIN}/dashboard`, dashboardRoute);
     
     //product
-    app.use(`${PATH_ADMIN}/product`, productRoute);
+    app.use(`${PATH_ADMIN}/products`, productRoute);
   
 }
