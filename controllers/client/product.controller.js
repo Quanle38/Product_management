@@ -6,7 +6,7 @@ module.exports.index= async (req,res) => {
     });
      products.map((product) =>{
         product.newPrice = (product.price - (product.price * product.discountPercentage) /100).toFixed(2);
-     })
+    })
     res.render("client/pages/products/index",{
         pageTitle : "Product",
         products : products,

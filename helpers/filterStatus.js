@@ -25,4 +25,5 @@ module.exports = (query) => {
         filterStatus[0].class = "active";
     }
     return filterStatus;
+    
 }

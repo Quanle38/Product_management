@@ -15,14 +15,21 @@ block main
                         ) #{item.name}
                 .col-6
                     form(id="form-search")
-                        .input-group 
-                            input(
-                                type="text"
-                                placeholder="Nhập từ khóa"
-                                name="keyword"
-                                class="form-control"
-                            )
-                            .input-group-append
+                        .input-group.position-relative
+                                input(
+                                    type="text"
+                                    placeholder="Nhập từ khóa"
+                                    name="keyword"
+                                    value=keyword
+                                    class="form-control"
+                                    id="search-input"
+                                )
+                                if (keyword)
+                                    a(
+                                        id="clear-search"
+                                        title="Xóa tìm kiếm"
+                                        style="position: absolute; right: 100px; top: 50%; transform: translateY(-50%); cursor: pointer; color: red; text-decoration: none; font-weight: bolder"
+                                    ) &times;
                                 button(
                                     class="btn btn-success"
                                     type="submit"
@@ -61,5 +68,18 @@ block main
                                     button(class="btn btn-warning btn-sm") Sửa
                                     button(class="btn btn-danger btn-sm ml-1") Xóa
                                 
+    nav(aria-label="Pagination")
+    ul.pagination.justify-content-center
+        //- Nút Previous (ẩn nếu ở trang 1)
+        li.page-item(class=(currentPage === 1 ? 'disabled' : ''))
+            a.page-link(href=`?page=${currentPage - 1}`) «
 
+        //- Các trang
+        each page in [1, 2, 3]
+            li.page-item(class=(page === currentPage ? 'active' : ''))
+                a.page-link(href=`?page=${page}`)= page
+
+        //- Nút Next (ẩn nếu ở trang 3)
+        li.page-item(class=(currentPage === 3 ? 'disabled' : ''))
+            a.page-link(href=`?page=${currentPage + 1}`) »
                        
