@@ -1,6 +1,7 @@
 const Product = require('./../../models/product.model');
 const filterStatusHelpers = require("../../helpers/filterStatus");
 const searchHelpers = require("../../helpers/search");
+const paginationHelpers = require("../../helpers/pagination");
 module.exports.index= async(req,res) => {
     console.log(req.query.status);
     let find = {
@@ -18,12 +19,28 @@ module.exports.index= async(req,res) => {
         find.title = search.regex;
     }
     //endsearch
-    const products = await Product.find(find); 
+    //pagination
+    const currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Product.countDocuments(find);
+    let objectPagination = paginationHelpers({
+        page : currentPage,
+        limit : 5,
+        totalProducts : totalProducts
+    },currentPage,totalProducts)
+    
+    
+    //endpagination
+    const products = await Product
+    .find(find)
+    .limit(objectPagination.limit)
+    .skip(objectPagination.indexStart)
 
     res.render("admin/pages/product/index",{
         pageTitle : "Product Page",
         products : products,
         filterStatus : filterStatus,
-        keyword : search.keyword
+        keyword : search.keyword,
+        totalPage : objectPagination.totalPage,
+        currentPage : currentPage,
     });
 }
