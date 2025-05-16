@@ -1,0 +1,20 @@
+mixin pagination(currentPage,totalPage)
+    .pagination
+    nav(aria-label="Pagination")
+        ul.pagination.justify-content-center
+            //- Nút Previous (ẩn nếu ở trang 1)
+            li.page-item(class=(currentPage === 1 ? 'disabled' : ''))
+                a.page-link(button-pagination="prev") «
+
+            //- Các trang
+            if(totalPage > 1)
+               - for(let page = 1; page <= totalPage; page ++)
+                    li.page-item(class=(page === currentPage ? 'active' : ''))
+                        a.page-link(page-pagination=page) #{page}
+            else 
+                li.page-item(class='active')
+                    a.page-link() 1
+
+            //- Nút Next (ẩn nếu ở trang 3)
+            li.page-item(class=(currentPage === totalPage ? 'disabled' : ''))
+                a.page-link(button-pagination="next") »

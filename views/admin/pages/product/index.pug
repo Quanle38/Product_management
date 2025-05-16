@@ -1,7 +1,9 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/box-head.pug
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
 block main
-    include ../../mixins/box-head.pug
+    +alert-success("5000")
     +box-head('Danh sách sản phẩm')
     .card.mb-3 
         .card-header Bộ lọc và tìm kiếm
@@ -37,6 +39,14 @@ block main
     .card.mb-3 
         .card-header Danh sách
         .card-body
+            .row 
+                    .col-8 
+                        h2 Viet sau
+                    .col-4 
+                        a(
+                            href=`${prefixAdmin}/products/create`
+                            class="btn btn-outline-success"
+                        ) + Thêm mới
             table.table.table-hover.table-sm
                 thead
                     tr
@@ -61,28 +71,44 @@ block main
                             td #{item.price}
                             td 
                                 if(item.status === "active")
-                                    a(href="a" class="badge badge-success") Hoạt động
+                                    a(
+                                        href="javascript:;" 
+                                        class="badge badge-success"
+                                        data-status=item.status 
+                                        data-id=item.id 
+                                        button-change-status
+
+                                        ) Hoạt động
                                 else 
-                                    a(href="a" class="badge badge-danger") Dừng hoạt động
+                                    a(
+                                        href="javascript:;" 
+                                        class="badge badge-danger"
+                                        data-status=item.status 
+                                        data-id=item.id 
+                                        button-change-status
+                                     ) Dừng hoạt động
                             td 
                                 button(class="btn btn-warning btn-sm") Sửa
                                 button(class="btn btn-danger btn-sm ml-1" delete-product product-id=item._id) Xóa
 
-    nav(aria-label="Pagination")
-        ul.pagination.justify-content-center
-            //- Nút Previous (ẩn nếu ở trang 1)
-            li.page-item(class=(currentPage === 1 ? 'disabled' : ''))
-                a.page-link(button-pagination="prev") «
+    +pagination(currentPage,totalPage)
 
-            //- Các trang
-            if(totalPage > 1)
-               - for(let page = 1; page <= totalPage; page ++)
-                    li.page-item(class=(page === currentPage ? 'active' : ''))
-                        a.page-link(page-pagination=page) #{page}
-            else 
-                li.page-item(class='active')
-                    a.page-link() 1
+    form(
+        action="",
+        method ="POST",
+        id="form-delete-product",
+        data-path=`${prefixAdmin}/products/delete`
+    )
 
-            //- Nút Next (ẩn nếu ở trang 3)
-            li.page-item(class=(currentPage === totalPage ? 'disabled' : ''))
-                a.page-link(button-pagination="next") »
+    form(
+        action="",
+        method ="POST",
+        id="form-change-status",
+        data-path=`${prefixAdmin}/products/change-status`
+    )
+    
+
+
+    script(src="/admin/js/product.js")
+
+    

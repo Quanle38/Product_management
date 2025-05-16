@@ -6,7 +6,6 @@ if(buttonStatusList.length > 0){
     buttonStatusList.forEach((buttonStatus)=>{
         buttonStatus.addEventListener("click",(e)=>{
             const status = e.target.getAttribute("button-status");
-            console.log(url.searchParams)
             if(status){
                 url.searchParams.set("status",status)
             } else{
@@ -86,31 +85,17 @@ if(buttonNumber.length > 0){
 }
 // end page-number
 
-//delete product
-const deleteProduct = document.querySelectorAll("[delete-product]");
-if(deleteProduct.length > 0){
-    let url = new URL(window.location.href)
-    deleteProduct.forEach((button)=>{
-        button.addEventListener("click",(e)=>{
-            const id = e.target.attributes[2].value;
-            if(confirm("Are you sure you want to delete this product ?")){
-                url.searchParams.set("delete",id)
-            }
-            window.location.href = url.href;
-        })
-    })
-}
-//end delete product
-//
-// document.querySelectorAll('.page-link').forEach(a => {
-//   a.addEventListener('click',(a) => {
-//     a.preventDefault();
-//     const page = Number(this.dataset.page);
-//     console.log("a" + page);
+//show alert
+ const showAlert = document.querySelector("[show-alert]")
+ if(showAlert){
+    const time = parseInt(showAlert.getAttribute("data-time"));
+    const closeAlert = showAlert.querySelector("[close-alert]");
+    setTimeout(()=>{
+        showAlert.classList.add("alert-hidden");
+    }, time);
+ }
+//end show alert
 
-//   });
-// });
-// pagination
 
 
 
