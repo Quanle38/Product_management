@@ -9,10 +9,17 @@ var updateSuccessMessage = ()=>{
 var deleteSuccessMessage =()=>{
     return "Delete Success ✅🎉";
 }
+var changePosition = ()=>{
+    return "Change Position Success ✅🎉";
+}
+var deleteAll = ()=>{
+    return " Delete All Success ✅🎉";
+}
 // [GET] /admin/products
 module.exports.index= async(req,res) => {
     let find = {
-        deleted : false
+        deleted : false,
+        
     }
     //filter status
     const filterStatus = filterStatusHelpers(req.query);
@@ -41,6 +48,7 @@ module.exports.index= async(req,res) => {
     .find(find)
     .limit(objectPagination.limit)
     .skip(objectPagination.indexStart)
+    .sort({position : "desc"})
 
     res.render("admin/pages/product/index",{
         pageTitle : "Product Page",
@@ -81,4 +89,37 @@ module.exports.changeStatus= async(req,res) => {
     await  Product.updateOne({_id : id},{status : status});
     req.flash("success",updateSuccessMessage());
     res.redirect(`${prefixAdmin}/products`);
+}
+// [PATCH] /admin/change-multi
+module.exports.changeMulti= async(req,res) => {
+    const type = req.body.type;
+    const listId = req.body.ids.split(", ");
+    switch (type) {
+        case "active":
+            await Product.updateMany({_id : {$in: listId}},{status : "active"});     
+            req.flash("success",updateSuccessMessage());   
+            break;
+        case "inactive":
+            await Product.updateMany({_id : {$in: listId}},{status : "inactive"});     
+            req.flash("success",updateSuccessMessage());   
+            break;
+        case "delete-all":
+            await Product.updateMany({_id : {$in: listId}},{deleted : true, deletedAt : new Date()});     
+            req.flash("success",deleteAll());   
+            break;
+        case "change-position":
+            for(const item of listId ){
+                let [id,position] = item.split("-");
+                position = parseInt(position);
+                await Product.updateMany({_id : id},{position : position});     
+                req.flash("success",changePosition());  
+            }
+             
+            break;
+    
+        default:
+            break;
+    }
+    res.redirect(`${prefixAdmin}/products`);
+    
 }
