@@ -81,6 +81,30 @@ module.exports.create= async(req,res) => {
     
 }
 
+
+
+module.exports.createProduct= async(req,res) => {
+    console.log(req.body);
+    req.body.price = parseInt(req.body.price);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage); 
+    console.log(req.body);
+    if(req.body.position ===""){
+        const index = await Product.countDocuments();
+        req.body.position = index + 1;
+    } else{
+        req.body.position = parseInt(req.body.position);
+    }
+    console.log(req.file);
+    if(req.file){
+        req.body.thumbnail = `./uploads/${req.file.filename}`;
+    };
+    const product = new Product(req.body);
+    await Product.insertOne(product);
+    req.flash("success","Add new Product succ");
+    res.redirect(`${prefixAdmin}/products/create`);
+}
+
 // [PATCH] /admin/change-status/:status/:id
 module.exports.changeStatus= async(req,res) => {
 
@@ -121,5 +145,6 @@ module.exports.changeMulti= async(req,res) => {
             break;
     }
     res.redirect(`${prefixAdmin}/products`);
+    
     
 }

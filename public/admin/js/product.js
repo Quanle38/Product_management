@@ -102,3 +102,12 @@ if(formchangeMulti){
 
     });
 }
+
+//Form Create
+// const formCreate = document.querySelector("#form-create-product");
+// if(formCreate){
+//     formCreate.addEventListener("submit",(e)=>{
+//         e.preventDefault();
+        
+//     });
+// }

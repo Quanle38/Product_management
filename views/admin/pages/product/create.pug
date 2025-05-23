@@ -7,10 +7,10 @@ block main
     h1(class="mb-4") Thêm mới sản phẩm
 
     form(
-        action=`${prefixAdmin}/products/create` 
+        action=`${prefixAdmin}/products/create-product` 
         id="form-create-product"
-        method="POST"
-        enctype="multipart/form-data"
+        method="POST"  
+        enctype="multipart/form-data"      
         )
         div(class="form-group")   
             label(for="title") Tiêu đề
@@ -65,14 +65,14 @@ block main
                 min="1")
 
         div(class="form-group")   
-            label(for="thumbnail") Ảnh
-            input(
-                type="file" 
-                class="form-control-file"
-                name="thumbnail" 
-                id="thumbnail"
-                accept="image/*"
-                )
+        label(for="thumbnail") Ảnh
+        input(
+            type="file" 
+            class="form-control-file"
+            name="thumbnail" 
+            id="thumbnail"
+            accept="image/*"
+            )  
 
         div(class="form-group")  
             label(for="position") Vị trí
@@ -113,4 +113,4 @@ block main
                 ) Tạo mới
 
 
-    script(src="/admin/js/products.js")
+    script(src="/admin/js/product.js")

@@ -13,7 +13,9 @@ const systemConfig = require("./config/system.js")
 database.connect();
 //boby
 app.use(methodOverride('_method'));
-app.use(bodyParser.urlencoded({extended : false}));
+//app.use(bodyParser.urlencoded());
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 //set view engine 
 app.set("views", "./views");
 app.set('view engine', 'pug');
